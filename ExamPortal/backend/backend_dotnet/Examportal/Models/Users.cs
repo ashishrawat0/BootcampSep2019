@@ -21,7 +21,6 @@ namespace Examportal.Models
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
 
-        public CandidateAnswer CandidateAnswer { get; set; }
         public ICollection<ExamDetails> ExamDetails { get; set; }
     }
 }

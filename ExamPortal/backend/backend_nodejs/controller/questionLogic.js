@@ -78,7 +78,6 @@ const radioOrCheckBoxValue = (value)=>{
         joinValue  = joinValue.replace(/[ ,.]/g,' ')
     }
     return joinValue
-    
 }
 
 module.exports = {

@@ -133,14 +133,22 @@ $(document).ready(function() {
 
 $(document).on('click', '#submitAnswer', function() {
     let questionId = $(this).parent().parent().parent().parent().children().children().children().attr('id')
-    let examCode = $(this).parent().parent().parent().parent().children().children().children().children().attr('id')
+    let examCode = $(this).parent().parent().parent().parent().children().children().children().children().html()
     let value = []
+    
     $.each($(`input[name=${questionId}]:checked`), function() {
         value.push($(this).val())
     })
     if (value.length === 0) {
         return
     }
+
+    dataToSend = {
+        code: localStorage.getItem('examCode'),
+        checkedOption: value,
+        qId: questionId
+    }
+    console.log(dataToSend)
     $.ajax('http://localhost:45728/question', {
         type: 'POST',
         dataType: 'JSON',
@@ -149,11 +157,7 @@ $(document).on('click', '#submitAnswer', function() {
             token: localStorage.getItem('token'),
             Authorization: "Bearer "+localStorage.getItem('token')
         },
-        data: {
-            code: examCode,
-            checkedOption: value,
-            qId: questionId
-        },
+        data: JSON.stringify(dataToSend),
         success: function(data) {
             $('#' + questionId + ".circle").css('background-color', "green")
         },
@@ -224,19 +228,23 @@ $(document).on('click', '#previousQuestion', function() {
 })
 
 $(document).on('click', '#modalEndTest', function() {
-    $.ajax('http://localhost:3000/exam/endTest', {
+    dataToSend = {
+        code: localStorage.getItem("examCode")
+    }
+    console.log
+    $.ajax('http://localhost:45728/exam/endTest', {
         type: 'POST',
         dataType: 'JSON',
+        contentType: "application/json;charset=utf-8",
         headers: {
             examCode: localStorage.getItem('examCode'),
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            Authorization: "Bearer "+localStorage.getItem('token')
         },
-        body: {
-            code: localStorage.getItem("examCode")
-        },
+        data: JSON.stringify(dataToSend),
         success: function(data) {
-            localStorage.clear()
-            $(location).attr('href', './endTest.html')
+            //localStorage.clear()
+            //$(location).attr('href', './endTest.html')
         },
         error: function(error) {
             console.log(error)

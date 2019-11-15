@@ -12,7 +12,6 @@ namespace Examportal.Auth
             var data = httpContext.User.Identity as ClaimsIdentity;
             if(data != null)
             {
-               
                 String email = data.FindFirst("Email").Value;
                 header.Add("Email",email);
             }

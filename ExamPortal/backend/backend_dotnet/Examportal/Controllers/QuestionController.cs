@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Collections.Generic;
+using Examportal.Controllers;
 using Examportal.Custom_Models;
+using Examportal.Auth;
+using Examportal.Handlers;
+using System.Collections.Generic;
 
 namespace Examportal.Controllers
 {
@@ -20,18 +23,16 @@ namespace Examportal.Controllers
         public IActionResult TestQuestions()
         {
             Boolean lastQuesStatus;
-            int i;
             string examcode = HttpContext.Request.Headers["examCode"].ToString();
             int pageNum = Int32.Parse(HttpContext.Request.Query["pageNumber"]);
             var ques = db.Questions.Where(s => s.ExamCode == examcode).Skip(pageNum).Take(1).Select(a=> new {a.AnswerType,a.Option1,a.Option2,a.Option3,a.Option4,_id = a.Id,a.QuestionImage,a.QuestionText }).ToList();
 
-            var lastQuestion = db.Questions.Where(s => s.ExamCode == examcode).OrderByDescending(key => key.Id).Select(a=> new { _id = a.Id,   QuestionText = a.QuestionText}).ToList();
+            var lastQuestion = db.Questions.Where(s => s.ExamCode == examcode).Select(a=> new { _id = a.Id,   QuestionText = a.QuestionText}).ToList();
 
-            if (lastQuestion[0].QuestionText == ques[0].QuestionText) lastQuesStatus = true;
+            if (lastQuestion[lastQuestion.Count()-1].QuestionText == ques[0].QuestionText) lastQuesStatus = true;
             else lastQuesStatus = false;
             var time = db.ExamDetails.Where(s => s.ExamCode == examcode).ToList();
-
-
+            
             return Ok(new
             {
                 allQuestions = lastQuestion,
@@ -44,11 +45,29 @@ namespace Examportal.Controllers
             });
         }
 
-        //[Authorize]
-        [Route("question")]
+        [Authorize]
+        [Route("/question")]
         [HttpPost]
-        public IActionResult SaveCandidateAnswers([FromBody] string value)
+        public IActionResult SaveCandidateAnswer([FromBody] QuestionCustomModel value)
         {
+            Dictionary<string, string> email = new Dictionary<string, string>();
+
+            QuestionHandler qh = new QuestionHandler();
+            Authentication auth = new Authentication();
+            email = auth.getAllClaims(HttpContext);
+
+            string joinValue = qh.radioOrCheckBoxValue(value);
+            var checkAnswer = db.Questions.Where(s => s.Id == Int32.Parse(value.QId)).Select(a => new { a.Answer, a.Weightage }).FirstOrDefault();
+            var existingAnswer = db.CandidateAnswer.Where(s => s.Email == email["Email"] && s.TestCode == value.Code).FirstOrDefault();
+
+            if (checkAnswer.Answer == joinValue)
+            {
+                qh.SaveCorrectOption(checkAnswer, existingAnswer, email["Email"], value, joinValue);
+            }
+            else
+            {
+                qh.SaveIncorrectOption(checkAnswer, existingAnswer, email["Email"], value, joinValue);
+            }
             return Ok();
         }
 

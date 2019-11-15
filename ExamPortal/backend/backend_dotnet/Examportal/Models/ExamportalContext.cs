@@ -16,6 +16,7 @@ namespace Examportal.Models
         }
 
         public virtual DbSet<CandidateAnswer> CandidateAnswer { get; set; }
+        public virtual DbSet<CandidateResult> CandidateResult { get; set; }
         public virtual DbSet<ExamDetails> ExamDetails { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Users> Users { get; set; }
@@ -33,15 +34,11 @@ namespace Examportal.Models
         {
             modelBuilder.Entity<CandidateAnswer>(entity =>
             {
-                entity.HasKey(e => e.Email);
+                entity.HasKey(e => e.CandidateId);
 
                 entity.ToTable("candidateAnswer");
 
-                entity.Property(e => e.Email)
-                    .HasColumnName("email")
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
+                entity.Property(e => e.CandidateId).HasColumnName("candidateId");
 
                 entity.Property(e => e.CompletionTime)
                     .HasColumnName("completionTime")
@@ -59,6 +56,11 @@ namespace Examportal.Models
                     .HasColumnName("createdDate")
                     .HasColumnType("date");
 
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Id).HasColumnName("_id");
 
                 entity.Property(e => e.ModifiedBy)
@@ -70,25 +72,42 @@ namespace Examportal.Models
                     .HasColumnName("modifiedDate")
                     .HasColumnType("date");
 
-                entity.Property(e => e.SubmitExam).HasColumnName("submitExam");
-
                 entity.Property(e => e.TestCode)
                     .HasColumnName("testCode")
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TotalScore).HasColumnName("totalScore");
-
-                entity.HasOne(d => d.EmailNavigation)
-                    .WithOne(p => p.CandidateAnswer)
-                    .HasForeignKey<CandidateAnswer>(d => d.Email)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__candidate__email__6D0D32F4");
-
                 entity.HasOne(d => d.IdNavigation)
                     .WithMany(p => p.CandidateAnswer)
                     .HasForeignKey(d => d.Id)
-                    .HasConstraintName("FK__candidateAn___id__6C190EBB");
+                    .HasConstraintName("FK__candidateAn___id__06CD04F7");
+
+                entity.HasOne(d => d.TestCodeNavigation)
+                    .WithMany(p => p.CandidateAnswer)
+                    .HasForeignKey(d => d.TestCode)
+                    .HasConstraintName("FK__candidate__testC__07C12930");
+            });
+
+            modelBuilder.Entity<CandidateResult>(entity =>
+            {
+                entity.HasKey(e => e.TestCode);
+
+                entity.ToTable("candidateResult");
+
+                entity.Property(e => e.TestCode)
+                    .HasColumnName("testCode")
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SubmitExam).HasColumnName("submitExam");
+
+                entity.Property(e => e.TotalScore).HasColumnName("totalScore");
             });
 
             modelBuilder.Entity<ExamDetails>(entity =>
