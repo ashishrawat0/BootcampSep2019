@@ -8,28 +8,28 @@ const users = [
         "name": "Himanshu Chauhan",
         "email": "himanshu@gmail.com",
         "phoneNumber": "true",
-        "password": "$2a$10$x/t9dmt1xkBZUiFWvA1yuusFETuJU4ITN4CwJtHIOT/o1cc.XAar6",
+        "password": "$2a$10$x/t9dmt1xkBZUiFWvA1yuusFETuJU4ITN4CwJtHIOT/o1cc.XAar6",//himanshu
         "accountType": "Student"
     },
     {
         "name": "chandan chandan",
         "email": "chandan@gmail.com",
         "phoneNumber": "true",
-        "password": "$2a$10$qy6lrCUZGNhmIcZrT2WCzu9vEtnO3Ot8IGgRD9FcI1s76k1PThXUS",
+        "password": "$2a$10$qy6lrCUZGNhmIcZrT2WCzu9vEtnO3Ot8IGgRD9FcI1s76k1PThXUS",//himanshu
         "accountType": "Student"
     },
     {
         "name": "admin admin",
         "email": "admin@gmail.com",
         "phoneNumber": "true",
-        "password": "$2a$10$WdiHxUwxtbis02QvS48DTuelHGnqBFZV0yn6Z6WyrxocXmFrNbuby",
+        "password": "$2a$10$WdiHxUwxtbis02QvS48DTuelHGnqBFZV0yn6Z6WyrxocXmFrNbuby",//admin
         "accountType": "Admin"
     },
     {
         "name": "ashish rawat",
         "email": "ashish@cygrp.com",
         "phoneNumber": "true",
-        "password": "$2a$10$Dunvtla2BIO30DXVU20YnuuFkxr/9FBEA4v2lGwHrg9m7kQlc5td.",
+        "password": "$2a$10$Dunvtla2BIO30DXVU20YnuuFkxr/9FBEA4v2lGwHrg9m7kQlc5td.",//ashish 
         "accountType": "Examiner "
     }
 ]
@@ -169,7 +169,11 @@ const questionDetails = [
         "answerType": "multipleOption"
     }
 
-]
+] 
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
 
 const examDetails = [
     {
@@ -178,13 +182,13 @@ const examDetails = [
         "examinerId": "1234",
         "instructions": "no instructions",
         "examDuration": "240",
-        "examStartTime": "2019-11-08 10:13:00"
+        "examStartTime": dateTime
     },
 {
         "examName": "chemistry",
         "examCode": "0000",
         "examDuration": "90",
-        "examStartTime": "2019-11-06 15:10:00",
+        "examStartTime": dateTime,
         "instructions": "no instructions",
         "examinerId": "5dc0ff27b29b8218244aa6c4"
     },
@@ -192,7 +196,7 @@ const examDetails = [
         "examName": "Check Box",
         "examCode": "1234",
         "examDuration": "240",
-        "examStartTime": "2019-11-06 19:10:00",
+        "examStartTime": dateTime,
         "instructions": "no insttructions",
         "examinerId": "5dc0ff27b29b8218244aa6c4"
     },
@@ -200,7 +204,7 @@ const examDetails = [
         "examName": "Data Structure",
         "examCode": "9876",
         "examDuration": "240",
-        "examStartTime": "2019-11-06 19:19:00",
+        "examStartTime": dateTime,
         "instructions": "no ",
         "examinerId": "5dc0ff27b29b8218244aa6c4"
     }
