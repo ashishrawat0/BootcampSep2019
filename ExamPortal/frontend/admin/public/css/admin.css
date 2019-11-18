@@ -107,6 +107,8 @@ body {
 .jumbotron {
     background-color: white;
     box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+    width:60%;
+    margin-left: 20%;
 }
 
 .option-div-flex {

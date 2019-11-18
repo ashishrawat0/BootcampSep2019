@@ -27,10 +27,11 @@ $(document).ready(function () {
   // {
   //   location.replace("../../index.html")
   // }
-  $.ajax("http://127.0.0.1:3000/examiner", {
+  //$.ajax('http://localhost:'+localStorage.getItem('server-port')+'/exam/accessKey', {
+  $.ajax("http://localhost:"+localStorage.getItem('server-port')+"/examiner", {
     type: "GET",
-    dataType: "json",
-    contentType: "application/json",
+    dataType: 'JSON',
+    contentType: "application/json;charset=utf-8",
     headers:{
       token: localStorage.getItem('token')
     },
@@ -38,7 +39,8 @@ $(document).ready(function () {
       display(recent);
       // console.log(recent);
     },
-    error: function () {
+    error: function (error) {
+      console.log(error)
       console.log("Something went wrong");
     }
 
@@ -53,7 +55,7 @@ $(document).ready(function () {
   $(document).on('click', '.deleteButton', function () {
     let id = $(this).attr('id')
     console.log(id);
-    $.ajax("http://127.0.0.1:3000/examiner/:id", {
+    $.ajax("http://localhost:"+localStorage.getItem('server-port')+"/examiner/"+id, {
       type: "DELETE",
       dataType: "json",
       contentType: "application/json",
@@ -63,11 +65,8 @@ $(document).ready(function () {
         }
       ),
       success: function (recent) {
-
-        //display(recent); 
-        location.reload();
-        console.log("user deleted");
-        //window.location.replace("adminHome.html")
+        display(recent);
+        window.location.replace("adminShowExaminer.html")
       },
       error: function () {
         console.log("Something went wrong");
@@ -78,7 +77,7 @@ $(document).ready(function () {
 
   $(document).on('click', '.viewButton', function () {
     let id = $(this).attr('id')
-    $.ajax("http://127.0.0.1:3000/examiner/id", {
+    $.ajax("http://127.0.0.1:"+localStorage.getItem('server-port')+"/examiner/id", {
       type: "GET",
       dataType: "json",
       contentType: "application/json",

@@ -86,7 +86,7 @@ namespace Examportal.Controllers
                     examCode = a.ExamCode,
                     examDuration = a.ExamDuration,
                     examStartTime = a.ExamStartTime
-                }).ToList();
+                }).FirstOrDefault();
                 return Ok(data);
             }catch(Exception e)
             {

@@ -10,19 +10,20 @@ using Bcrypt =  BCrypt.Net;
 
 namespace Examportal.Controllers
 {
-    [Route("/signUp")]
+    
     [ApiController]
     public class SignUpController : ControllerBase
     {
         ExamportalContext db = new ExamportalContext();
-
+        [Route("/signUp")]
         [HttpPost]
-        public IActionResult Post([FromBody] Users value)
+        public IActionResult student([FromBody] Users value)
         {
             var data = (from c in db.Users where c.Email == value.Email select c).FirstOrDefault();
             if(data == null)
             {
-                value.CreatedBy = "admin";
+                value.CreatedBy = "Student";
+                value.AccountType = "Student";
                 value.CreatedDate = DateTime.Now;
                 value.Password = Bcrypt.BCrypt.HashPassword(value.Password);
                 db.Users.Add(value);
@@ -34,6 +35,28 @@ namespace Examportal.Controllers
                 return BadRequest();
             }
             
+        }
+
+        [Route("/examiner")]
+        [HttpPost]
+        public IActionResult Examiner([FromBody] Users value)
+        {
+            var data = (from c in db.Users where c.Email == value.Email select c).FirstOrDefault();
+            if (data == null)
+            {
+                value.CreatedBy = "Examiner";
+                value.AccountType = "Examiner";
+                value.CreatedDate = DateTime.Now;
+                value.Password = Bcrypt.BCrypt.HashPassword(value.Password);
+                db.Users.Add(value);
+                db.SaveChanges();
+                return Ok(true);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
     }
 }

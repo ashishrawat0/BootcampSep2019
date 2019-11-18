@@ -33,7 +33,7 @@ $(document).ready(function() {
         }
         if (flag == 1) {
             //console.log("hello buddy");
-            $.ajax("http://localhost:3000/examiner", {
+            $.ajax("http://localhost:"+localStorage.getItem('server-port')+"/examiner", {
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",

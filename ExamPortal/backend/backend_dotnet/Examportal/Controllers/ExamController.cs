@@ -9,6 +9,11 @@ using System.Collections.Generic;
 using Examportal.Handlers;
 using System.Web;
 using System;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using OfficeOpenXml;
+using System.Text;
 
 namespace Examportal.Controllers
 {
@@ -99,7 +104,8 @@ namespace Examportal.Controllers
                     option3 = a.Option3,
                     option4 = a.Option3,
                     weightage = a.Weightage,
-                    answer = a.Answer
+                    answer = a.Answer,
+                    questionImage = a.QuestionImage
                 }).ToList();
                 return Ok(data);
             }
@@ -126,7 +132,7 @@ namespace Examportal.Controllers
                     weightage = a.Weightage,
                     answer = a.Answer,
                     answerType = a.AnswerType
-                }).ToList();
+                }).FirstOrDefault();
                 return Ok(data);
             }
             catch (Exception e)
@@ -157,6 +163,183 @@ namespace Examportal.Controllers
             {
                 return BadRequest(new { error = e });
             }
+        }
+
+        [Route("/exam/question")]
+        [HttpPost]
+        public IActionResult uploadQuestion()
+        {
+            try
+            {
+                var req = HttpContext.Request.Form;
+                String path = Directory.GetCurrentDirectory();
+                //String dest = "C:\\Users\\himanshu.chauhan\\Desktop\\BootcampSep2019\\ExamPortal\frontend\\exminer\\public\\assets";
+                String dest = "C:/Users/himanshu.chauhan/Desktop/BootcampSep2019/ExamPortal/frontend/exminer/public/assets";
+                //String dest = "E:\examportal";
+                var file = HttpContext.Request.Form.Files[0];
+                String ImageURL = null;
+                //dest = dest + "\file.txt";
+                if (Directory.Exists(dest))
+                {
+
+                    var filename = ContentDispositionHeaderValue
+                                      .Parse(file.ContentDisposition)
+                                      .FileName
+                                      .Trim('"');
+                    //filename = Path.Combine(dest, $@"{filename}");
+                    //filename = "E:\octaber.jpg";
+                    filename = dest + "\\" + filename;
+
+                    using (FileStream fs = System.IO.File.Create(filename))
+                    {
+                        file.CopyTo(fs);
+                        fs.Flush();
+                    }
+
+                     ImageURL = "../public/assets/" + file.FileName;
+
+                }
+                Questions obj = new Questions();
+                obj.Answer = HttpContext.Request.Form["answer"];
+                obj.QuestionText = req["questionText"]; obj.Option1 = req["option1"]; obj.Option2 = req["option2"];
+                obj.Option3 = req["option3"]; obj.Option4 = req["option4"]; obj.ExamCode = req["examCode"];
+                obj.Weightage = Convert.ToInt32(req["weightage"]); obj.QuestionImage = ImageURL;obj.AnswerType = req["answerType"];
+                db.Questions.Add(obj);
+                db.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { error = e });
+            }
+        }
+
+        [Route("/exam/questions/uploadExcel")]
+        [HttpPost]
+
+        public async Task createDirectoryAsync()
+        {
+
+            string currentpath = System.IO.Directory.GetCurrentDirectory();
+            string foldername = "Files";
+            string path = Path.Combine(currentpath, foldername);
+
+
+            try
+            {
+                // Determine whether the directory exists.
+                if (Directory.Exists(path))
+                {
+
+                    var filePayload = HttpContext.Request.Form.Files[0];
+                    var examcode = HttpContext.Request.Form["examCode"];
+
+                    if (filePayload.Length > 0)
+                        using (var fileStream = new FileStream(Path.Combine(path, filePayload.FileName), FileMode.Create))
+                            await filePayload.CopyToAsync(fileStream);
+
+
+                    if (filePayload.Length > 0)
+                        using (var fileStream = new FileStream(Path.Combine(path, filePayload.FileName), FileMode.Create))
+                            await filePayload.CopyToAsync(fileStream);
+
+                    var i = 0;
+                    var index = 0;
+                    string[] filesdirectory = Directory.GetFiles(path, "*.xlsx", SearchOption.AllDirectories);
+                    for (i = 0; i < filesdirectory.Length; i++)
+                    {
+                        String[] str = filesdirectory[i].Split("\\");
+                        int length = str.Length;
+                        if (str[length - 1] == (filePayload.FileName))
+                        {
+                            index = i;
+                        }
+                    }
+                    FileInfo file = new FileInfo(filesdirectory[index]);
+                    using (var package = new ExcelPackage(file))
+                    {
+                        var worksheet = package.Workbook.Worksheets[1];
+
+
+                        int rowCount = worksheet.Dimension.Rows;
+                        int ColCount = worksheet.Dimension.Columns;
+                        StringBuilder rawText = new StringBuilder();
+                        String result = "";
+                        for (int row = 1; row <= rowCount; row++)
+                        {
+                            Questions questions = new Questions();
+                            for (int col = 1; col <= ColCount; col++)
+                            {
+
+
+                                // This is just for demo purposes
+                                rawText.Append(worksheet.Cells[row, col].Value.ToString() + " ");
+                                result = rawText.ToString();
+                                if (col == 1)
+                                {
+                                    questions.QuestionText = result;
+                                }
+                                if (col == 2)
+                                {
+                                    questions.Option1 = result;
+                                }
+                                if (col == 3)
+                                {
+                                    questions.Option2 = result;
+                                }
+                                if (col == 4)
+                                {
+                                    questions.Option3 = result;
+                                }
+                                if (col == 5)
+                                {
+                                    questions.Option4 = result;
+                                }
+
+                                if (col == 6)
+                                {
+                                    questions.Answer = result;
+                                }
+                                if (col == 7)
+                                {
+                                    questions.Weightage = int.Parse(result);
+                                }
+                                if (col == 8)
+                                {
+                                    questions.QuestionImage = result;
+                                }
+                                if (col == 9)
+                                {
+                                    questions.AnswerType = result;
+                                }
+                                questions.ExamCode = examcode;
+                                questions.CreatedDate = DateTime.Now;
+                                rawText.Remove(0, rawText.Length);
+                            }
+                            result = result.Trim();
+
+
+
+                            db.Questions.Add(questions);
+                            db.SaveChanges();
+                        }
+                    }
+                    return;
+
+
+                }
+
+                // create the directory.
+                DirectoryInfo di = Directory.CreateDirectory(path);
+
+                Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(path));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+
         }
     }
 }
