@@ -60,24 +60,41 @@ namespace Examportal.Migrations
                         .HasColumnName("modifiedDate")
                         .HasColumnType("date");
 
-                    b.Property<byte?>("SubmitExam")
-                        .HasColumnName("submitExam");
-
                     b.Property<string>("TestCode")
                         .HasColumnName("testCode")
                         .HasMaxLength(20)
                         .IsUnicode(false);
 
-                    b.Property<int?>("TotalScore")
-                        .HasColumnName("totalScore");
-
                     b.HasKey("CandidateId");
-
-                    b.HasIndex("Email");
 
                     b.HasIndex("Id");
 
+                    b.HasIndex("TestCode");
+
                     b.ToTable("candidateAnswer");
+                });
+
+            modelBuilder.Entity("Examportal.Models.CandidateResult", b =>
+                {
+                    b.Property<string>("TestCode")
+                        .HasColumnName("testCode")
+                        .HasMaxLength(20)
+                        .IsUnicode(false);
+
+                    b.Property<string>("Email")
+                        .HasColumnName("email")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.Property<byte?>("SubmitExam")
+                        .HasColumnName("submitExam");
+
+                    b.Property<int?>("TotalScore")
+                        .HasColumnName("totalScore");
+
+                    b.HasKey("TestCode");
+
+                    b.ToTable("candidateResult");
                 });
 
             modelBuilder.Entity("Examportal.Models.ExamDetails", b =>
@@ -279,15 +296,15 @@ namespace Examportal.Migrations
 
             modelBuilder.Entity("Examportal.Models.CandidateAnswer", b =>
                 {
-                    b.HasOne("Examportal.Models.Users", "EmailNavigation")
-                        .WithMany("CandidateAnswer")
-                        .HasForeignKey("Email")
-                        .HasConstraintName("FK__candidate__email__73BA3083");
-
                     b.HasOne("Examportal.Models.Questions", "IdNavigation")
                         .WithMany("CandidateAnswer")
                         .HasForeignKey("Id")
-                        .HasConstraintName("FK__candidateAn___id__72C60C4A");
+                        .HasConstraintName("FK__candidateAn___id__06CD04F7");
+
+                    b.HasOne("Examportal.Models.CandidateResult", "TestCodeNavigation")
+                        .WithMany("CandidateAnswer")
+                        .HasForeignKey("TestCode")
+                        .HasConstraintName("FK__candidate__testC__07C12930");
                 });
 
             modelBuilder.Entity("Examportal.Models.ExamDetails", b =>

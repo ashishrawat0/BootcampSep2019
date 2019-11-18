@@ -34,5 +34,14 @@ namespace Examportal.Controllers
 
 
         }
+        [Route("/examiner/viewperformance")]
+        [HttpGet]
+        public IActionResult viewPerformance()
+        {
+            var examId=HttpContext.Request.Headers["examId"];
+            var details = db.CandidateAnswer.Where(e => e.TestCode == examId).ToList();
+            //var 
+            return Ok(new { a = details });
+        }
     }
 }
