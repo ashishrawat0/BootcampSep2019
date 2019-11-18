@@ -67,7 +67,9 @@ function showStudents() {
         type: 'GET',
         dataType: 'JSON',
         headers: {
-            'token': localStorage.getItem('token')
+            'token': localStorage.getItem('token'),
+            'Authorization': 'Bearer '+localStorage.getItem('token')
+
         },
         success: function(data) {
             let i = 0;
@@ -80,7 +82,9 @@ function showStudents() {
                 count++;
             }
         },
-        error: function(error) {}
+        error: function(error) {
+            console.log(error)
+        }
     })
 }
 

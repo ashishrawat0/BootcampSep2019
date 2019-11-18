@@ -1,7 +1,7 @@
 $(document).on('click', '#loginButton', function() {
         let email = $('#inputEmail').val()
         let password = $('#inputPassword').val()
-        $.ajax('http://localhost:45728/login', {
+        $.ajax('http://localhost:'+localStorage.getItem('server-port')+'/login', {
             type: 'POST',
             dataType: 'JSON',
             contentType: "application/json;charset=utf-8",
@@ -16,7 +16,6 @@ $(document).on('click', '#loginButton', function() {
             }),
             success: function(data) {
                 localStorage.setItem('token', data.token)
-                    //here i have used accountType to redirect to respective page
                 if (data.accountType == "Examiner")
                     $(location).attr('href', '../../exminer/views/examiner.html')
                 else if (data.accountType == "Student")

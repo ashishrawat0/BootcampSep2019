@@ -1,7 +1,7 @@
 const { questionDetail } = require('../models/question')
 const { test } = require('../models/candidateAnswer')
 const { examDetail } = require('../models/examDetail')
-const {checkExistingRightOption, checkExistingWrongOption,CheckBoxValue} = require('./questionLogic')
+const {checkExistingRightOption, checkExistingWrongOption, radioOrCheckBoxValue} = require('./questionLogic')
 
 const answerObject = (body,headers,weightage,status,submitStatus)=>{
     weightage = parseInt(weightage)

@@ -15,6 +15,7 @@ namespace Examportal.Models
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
+        public string Answer { get; set; }
 
         public Questions IdNavigation { get; set; }
         public CandidateResult TestCodeNavigation { get; set; }

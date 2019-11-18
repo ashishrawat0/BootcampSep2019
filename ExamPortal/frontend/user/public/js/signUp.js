@@ -6,7 +6,7 @@ $(document).ready(function () {
         var PhoneNumber = $("#phoneNumber").val()
         var Password = $("#inputPassword").val()
         confirmPassword = $("#cnfPassword").val()
-        var accountType = "Examiner"
+        var accountType = "Student"
 
 
         if (firstName == "") {
@@ -49,7 +49,7 @@ $(document).ready(function () {
             return alert("Confirm Password does not match")
         }
         name = firstName + " " + lastName;
-        $.ajax("http://localhost:45728/signUp", {
+        $.ajax("http://localhost:"+localStorage.getItem('server-port')+"/signUp", {
             type: "POST",
             dataType: "json",
             contentType: "application/json;charset=utf-8",

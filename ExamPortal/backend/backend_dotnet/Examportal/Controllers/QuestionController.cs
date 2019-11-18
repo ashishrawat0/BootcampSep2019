@@ -58,7 +58,7 @@ namespace Examportal.Controllers
 
             string joinValue = qh.radioOrCheckBoxValue(value);
             var checkAnswer = db.Questions.Where(s => s.Id == Int32.Parse(value.QId)).Select(a => new { a.Answer, a.Weightage }).FirstOrDefault();
-            var existingAnswer = db.CandidateAnswer.Where(s => s.Email == email["Email"] && s.TestCode == value.Code).FirstOrDefault();
+            var existingAnswer = db.CandidateResult.Where(s => s.Email == email["Email"] && s.TestCode == value.Code).FirstOrDefault();
 
             if (checkAnswer.Answer == joinValue)
             {

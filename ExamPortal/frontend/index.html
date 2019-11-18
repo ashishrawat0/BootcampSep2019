@@ -1,58 +1,40 @@
- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>Cyber Group - Software & IT Consultants Texas</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./user/public/css/index.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!-- cybergroup logo on top -->
-    <link rel="icon" href="https://www.cygrp.com/wp-content/uploads/2019/06/cybergroup-site-icon.png" type="image/x-icon">
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="./public/css/reset.css">
-    <link rel="stylesheet" href="./public/css/style.css">
-
-</head>
-
-<body background="./user/public/assets/thumb-1920-486292.jpg">
-    <nav class="navbar navbar-expand-lg fixed-top" style="background-color: black;">
-        <img src="./user/public/assets/cybergrouplogo.png" class="logo">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<html>
+    <head>
+        <link rel="stylesheet" href="./public/css/index.css">
+        <link rel="stylesheet" href="./user/public/css/login.css">
+        <title>Server - Exam Portal</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://kit.fontawesome.com/43b7c42c61.js" crossorigin="anonymous"></script>
+        <title></title>
+    </head>
+    <body>
+            <nav class="navbar navbar-expand-lg fixed-top" style="background-color: black;">
+            <img src="./user/public/assets/cybergrouplogo.png" class="logo">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto ">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://www.cygrp.com/">About</a>
-                </li>
-            </ul>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto ">
+
+                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.cygrp.com/">About</a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+        <div>
+            <p class="heading">Exam Portal</p>
+            <p class="text">Select your server</p>
         </div>
-    </nav>
-    <div class="container" style="padding: 20px;">
-        <section class="cd-intro">
-            <h1 class="cd-headline letters rotate-2">
-                <span>Change the way you</span>
-                <span class="cd-words-wrapper">
-                    <b class="is-visible">Learn</b>
-                    <b>Think</b>
-                    <b>Look</b>
-                </span>
-            </h1>
-        </section>
-        <div class="spacing">
-            <button id="signUp" class="btn btn-success my-2 my-sm-0" style="color: white;padding: 14px;" type="button" onclick="location.reload();location.href='./user/views/signUp.html'">Sign Up</button>
-            <button id="Login" class="btn btn-success my-2 my-sm-0" style="color: white;padding: 14px 20px;" type="button" onclick="location.reload();location.href='./user/views/login.html'">Login</button>
+        <div class="button-center">
+            <button type="button" id="node-server"><i class="fab fa-node-js"></i> Node JS</button>
+            <button type="button" id="dot-net-server"><img src="./user/public/assets/social_media_social_media_logo_dot_net-512.png"> Dot net</button>
         </div>
-    </div>
-    <!-- <script src="./public/js/jquery-2.1.1.js"></script> -->
-
-    <script src="./public/js/main.js"></script>
-
-</body>
-
+        <script src="./public/js/changeServer.js"></script>
+    </body>
 </html>

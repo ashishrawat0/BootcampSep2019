@@ -110,7 +110,7 @@ namespace Examportal.Controllers
                 data.ModifiedDate = DateTime.Now;
 
                 Users obj = db.Users.FirstOrDefault(e => e.Email == email["Email"]);
-                data.ModifiedBy = obj.Name;
+                //data.ModifiedBy = obj.Name;
 
                 db.SaveChanges();
                 return Ok();

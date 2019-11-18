@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Examportal.Auth;
 using Examportal.Custom_Models;
 using Examportal.Models;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,6 @@ using Bcrypt = BCrypt.Net;
 
 namespace Examportal.Controllers
 {
-    [Route("/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -26,8 +26,9 @@ namespace Examportal.Controllers
             _config = config;
         }
 
-        ExamportalContext db = new ExamportalContext();
+            ExamportalContext db = new ExamportalContext();
 
+        [Route("/login")]
         [HttpPost]
         public IActionResult Post([FromBody] UserLoginCustomModel value)
         {
@@ -43,6 +44,23 @@ namespace Examportal.Controllers
                 return BadRequest(new { message = "Invalid Credentials" });
             }
 
+        }
+        [Route("/loggedIn")]
+        [HttpGet]
+        public IActionResult loggedInUser()
+        {
+            Dictionary<string, string> email = new Dictionary<string, string>();
+
+            Authentication auth = new Authentication();
+            email = auth.getAllClaims(HttpContext);
+            String userEmail = "";
+            foreach (KeyValuePair<string, string> em in email)
+            {
+                userEmail = em.Value;
+                break;
+            }
+            var exams = db.Users.Where(e => e.Email == userEmail).ToList();
+            return Ok(exams[0]);
         }
 
         private string GenerateJSONToken(UserLoginCustomModel user)

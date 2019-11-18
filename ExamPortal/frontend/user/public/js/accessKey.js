@@ -15,12 +15,16 @@ $(document).on('click', '#checkAccessKey', function() {
     const tok = localStorage.getItem('token');
 
     if (tok == null) {
-        location.replace("../../index.html")
+        location.replace("./login.html")
     }
-    $.ajax('http://localhost:45728/exam/accessKey', {
+    $.ajax('http://localhost:'+localStorage.getItem('server-port')+'/exam/accessKey', {
         type: 'POST',
         dataType: 'JSON',
         contentType: "application/json;charset=utf-8",
+        headers:{
+            token: localStorage.getItem('token'),
+            Authorization: "Bearer "+localStorage.getItem('token')
+        },
         data: JSON.stringify({
             examCode: $(".inputBox").val()
         }),
@@ -38,5 +42,5 @@ $(document).on('click', '#checkAccessKey', function() {
 
 function logout() {
     localStorage.removeItem("token")
-    location.replace("../../index.html")
+    location.replace("./examPortal.html")
 }

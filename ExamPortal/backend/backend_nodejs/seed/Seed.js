@@ -207,15 +207,15 @@ const examDetails = [
 ]
 
 
-for (let i = 0; i < users.length; i++) {
-    let data = new user(users[i])
-    data.save()
-}
+// for (let i = 0; i < users.length; i++) {
+//     let data = new user(users[i])
+//     data.save()
+// }
 
-for (let i = 0; i < answerDetails.length; i++) {
-    let data = new test(answerDetails[i])
-    data.save()
-}
+// for (let i = 0; i < answerDetails.length; i++) {
+//     let data = new test(answerDetails[i])
+//     data.save()
+// }
 
 for (let i = 0; i < questionDetails.length; i++) {
     let data = new questionDetail(questionDetails[i])

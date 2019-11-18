@@ -26,7 +26,11 @@ namespace Examportal.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=CYG359;Database=Examportal;Trusted_Connection=True;");
+<<<<<<< HEAD
+                optionsBuilder.UseSqlServer("Server=CYG238;Database=Examportal;Trusted_Connection=True;");
+=======
+                optionsBuilder.UseSqlServer("Server=CYG355;Database=Examportal;Trusted_Connection=True;");
+>>>>>>> upstream/development
             }
         }
 
@@ -39,6 +43,11 @@ namespace Examportal.Models
                 entity.ToTable("candidateAnswer");
 
                 entity.Property(e => e.CandidateId).HasColumnName("candidateId");
+
+                entity.Property(e => e.Answer)
+                    .HasColumnName("answer")
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.CompletionTime)
                     .HasColumnName("completionTime")
@@ -155,10 +164,10 @@ namespace Examportal.Models
                     .HasColumnName("_id")
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.ModifiedBy)
-                    .HasColumnName("modifiedBy")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+               // entity.Property(e => e.ModifiedBy)
+                //    .HasColumnName("modifiedBy")
+                  //  .HasMaxLength(20)
+                   // .IsUnicode(false);
 
                 entity.Property(e => e.ModifiedDate)
                     .HasColumnName("modifiedDate")

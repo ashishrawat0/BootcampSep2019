@@ -1,5 +1,5 @@
 $(document).on('click', '.startTest', function() {
-    $.ajax('http://localhost:45728/exam/accessKey', {
+    $.ajax('http://localhost:'+localStorage.getItem('server-port')+'/exam/accessKey', {
         type: 'GET',
         dataType: 'JSON',
         headers: {
@@ -44,7 +44,7 @@ function checkTimeForTest(time) {
 }
 
 $(document).ready(function() {
-    $.ajax('http://localhost:45728/exam/accessKey', {
+    $.ajax('http://localhost:'+localStorage.getItem('server-port')+'/exam/accessKey', {
         type: 'GET',
         dataType: 'JSON',
         headers: {
@@ -58,7 +58,7 @@ $(document).ready(function() {
         },
         error: function(error) {
             if(error.status === 401){
-                location.replace('../../index.html')
+                location.replace('./examPortal.html')
             }
         }
     })
@@ -66,5 +66,5 @@ $(document).ready(function() {
 
 function logout() {
     localStorage.removeItem("token")
-    location.replace("../../index.html")
+    location.replace("./examPortal.html")
 }

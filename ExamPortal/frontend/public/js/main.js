@@ -152,3 +152,11 @@ jQuery(document).ready(function($) {
         $newWord.removeClass('is-hidden').addClass('is-visible');
     }
 });
+
+$(document).on('click','#signUp',function(){
+    $(location).attr('href','./signUp.html')
+})
+
+$(document).on('click','#Login',function(){
+    $(location).attr('href','./login.html')
+})

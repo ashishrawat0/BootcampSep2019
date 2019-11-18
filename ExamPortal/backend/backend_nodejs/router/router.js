@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const { SECRET } = require("../config/config")
 const multer = require('multer')
 const path = require('path')
-// var reqPath = path.join(__dirname, '../../frontend/exminer/excelFileUpload')
+//const reqPath = path.join(__dirname, '../../frontend/exminer/public/assets');
 var storage = multer.memoryStorage()
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -15,10 +15,22 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, callback) {
         callback(null,file.originalname);
-        // Date.now() + '-' + 
       }
 });
+const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
+const storage1 = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, reqPath)
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
 const upload = multer({storage:storage})
+var upload1 = multer({ limits: {fileSize: 2000000 },storage1: storage1 })
+// var upload = multer({ dest: 'upload/'});
+
+
 const createToken = require("../auth/authenticator").checkAuth;
 
 module.exports = () => {
@@ -120,12 +132,14 @@ module.exports = () => {
     })
 
     //examiner will edit questions
-    app.patch('/exam/question/:id', upload.single('questionImage'), middleware, (req, res) => {
+    app.patch('/exam/question/:id', upload1.single('questionImage'), middleware, (req, res) => {
+        console.log('edit pic',req.file)
         if (req.file) {
             req.body['questionImage'] = '../public/assets/' + req.file.filename
         } else {
             req.body['questionImage'] = null
         }
+        console.log(req.file)
         Users.editQuestion(req, res)
     })
 
