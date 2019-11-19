@@ -174,30 +174,33 @@ namespace Examportal.Controllers
                 var req = HttpContext.Request.Form;
                 String path = Directory.GetCurrentDirectory();
                 //String dest = "C:\\Users\\himanshu.chauhan\\Desktop\\BootcampSep2019\\ExamPortal\frontend\\exminer\\public\\assets";
-                String dest = "C:/Users/himanshu.chauhan/Desktop/BootcampSep2019/ExamPortal/frontend/exminer/public/assets";
+                String dest = "e:/new-branch/ExamPortal/frontend/exminer/public/assets";
                 //String dest = "E:\examportal";
-                var file = HttpContext.Request.Form.Files[0];
+                var file = HttpContext.Request.Form.Files != null && HttpContext.Request.Form.Count() > 0 ? HttpContext.Request.Form.Files[0]:null;
                 String ImageURL = null;
                 //dest = dest + "\file.txt";
-                if (Directory.Exists(dest))
+                if( file != null )
                 {
-
-                    var filename = ContentDispositionHeaderValue
-                                      .Parse(file.ContentDisposition)
-                                      .FileName
-                                      .Trim('"');
-                    //filename = Path.Combine(dest, $@"{filename}");
-                    //filename = "E:\octaber.jpg";
-                    filename = dest + "\\" + filename;
-
-                    using (FileStream fs = System.IO.File.Create(filename))
+                    if (Directory.Exists(dest))
                     {
-                        file.CopyTo(fs);
-                        fs.Flush();
+
+                        var filename = ContentDispositionHeaderValue
+                                          .Parse(file.ContentDisposition)
+                                          .FileName
+                                          .Trim('"');
+                        //filename = Path.Combine(dest, $@"{filename}");
+                        //filename = "E:\octaber.jpg";
+                        filename = dest + "\\" + filename;
+
+                        using (FileStream fs = System.IO.File.Create(filename))
+                        {
+                            file.CopyTo(fs);
+                            fs.Flush();
+                        }
+
+                        ImageURL = "../public/assets/" + file.FileName;
+
                     }
-
-                     ImageURL = "../public/assets/" + file.FileName;
-
                 }
                 Questions obj = new Questions();
                 obj.Answer = HttpContext.Request.Form["answer"];
